@@ -35,3 +35,11 @@ export const loginUser = asyncHandler(async (req, res) => {
   createToken(res, user._id);
   res.status(201).json({ message: "Login successfully" });
 });
+
+export const logoutUser = asyncHandler(async (req, res) => {
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(201).json({ message: "Logout successfully" });
+});
