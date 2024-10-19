@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import User from "../models/userModel.js";
 const createUser = asyncHandler(async (req, res) => {
@@ -8,8 +9,8 @@ const createUser = asyncHandler(async (req, res) => {
 
   const userExists = await User.findOne({ email });
   if (userExists) res.status(400).send("User already exists");
-
-  const newUser = new User({ username, email, password });
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const newUser = new User({ username, email, password: hashedPassword });
   try {
     await newUser.save();
     res.status(201).json({ newUser });
