@@ -43,3 +43,16 @@ export const logoutUser = asyncHandler(async (req, res) => {
   });
   res.status(201).json({ message: "Logout successfully" });
 });
+
+export const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({ isAdmin: false });
+  if (users.length === 0) {
+    res.status(400).send("Users not found");
+  }
+  res.status(201).json({ users });
+});
+
+export const getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (!user) res.status(400).send("User not found");
+});
