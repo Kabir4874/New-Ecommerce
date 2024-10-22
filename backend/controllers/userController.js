@@ -65,3 +65,18 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
   const updatedUser = await user.save();
   res.status(201).json({ updatedUser });
 });
+
+export const deleteUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) res.status(400).send("User not found");
+  if (user && user.isAdmin) {
+    res.status(400);
+    throw new Error("Cannot delete admin user");
+  }
+  await User.deleteOne({ _id: user._id });
+  res.json({ message: "User removed" });
+});
+
+export const getUserById= asyncHandler(async(req,res)=>{
+  console.log(req.params.id);
+})
