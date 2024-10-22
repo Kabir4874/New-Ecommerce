@@ -55,4 +55,13 @@ export const getAllUsers = asyncHandler(async (req, res) => {
 export const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
   if (!user) res.status(400).send("User not found");
+  res.status(201).json({ user });
+});
+
+export const updateUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (!user) res.status(400).send("User not found");
+  user.username = req.body.username || user.username;
+  const updatedUser = await user.save();
+  res.status(201).json({ updatedUser });
 });

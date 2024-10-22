@@ -2,9 +2,10 @@ import express from "express";
 import {
   createUser,
   getAllUsers,
+  getUserProfile,
   loginUser,
   logoutUser,
-  getUserProfile,
+  updateUserProfile
 } from "../controllers/userController.js";
 import {
   authenticate,
@@ -16,6 +17,9 @@ const router = express.Router();
 router.post("/signup", createUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
-router.get("/get-all-users", authenticate, authorizedAdmin, getAllUsers);
-router.get('/user-profile', authenticate,getUserProfile)
+router.get("/get-all", authenticate, authorizedAdmin, getAllUsers);
+router
+  .route("/profile")
+  .get(authenticate, getUserProfile)
+  .put(authenticate, updateUserProfile);
 export default router;
